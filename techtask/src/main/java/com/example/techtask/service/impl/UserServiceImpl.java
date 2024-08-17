@@ -24,32 +24,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUser() {
-        double maxSum = 0;
-        int userId = 0;
-
-        Optional<Order> order = orderRepository.findAll()
-                .stream()
-                .filter(o -> o.getCreatedAt().getYear() == 2003)
-                .max(Comparator.comparingDouble(o -> o.getQuantity() * o.getPrice()));
-
-        Optional<User> user = Optional.empty();
-        if (order.isPresent()) {
-           user = userRepository.findById(order.get().getUserId());
-        }
-
-        return user.orElse(null);
+//        double maxSum = 0;
+//        int userId = 0;
+//
+//        Optional<Order> order = orderRepository.findAll()
+//                .stream()
+//                .filter(o -> o.getCreatedAt().getYear() == 2003)
+//                .max(Comparator.comparingDouble(o -> o.getQuantity() * o.getPrice()));
+//
+//        Optional<User> user = Optional.empty();
+//        if (order.isPresent()) {
+//           user = userRepository.findById(order.get().getUserId());
+//        }
+//
+//        return user.orElse(null);
+        return userRepository.findUserWithMaxDeliveredOrderSumIn2003();
     }
 
     @Override
     public List<User> findUsers() {
+//        return orderRepository.findAll()
+//                .stream()
+//                .filter(o -> o.getCreatedAt().getYear() == 2010)
+//                .filter(o -> o.getOrderStatus() == OrderStatus.PAID)
+//                .map(o -> userRepository.findById(o.getUserId()))
+//                .filter(Optional::isPresent)
+//                .map(Optional::get)
+//                .toList();
 
-        return orderRepository.findAll()
-                .stream()
-                .filter(o -> o.getCreatedAt().getYear() == 2010)
-                .filter(o -> o.getOrderStatus() == OrderStatus.PAID)
-                .map(o -> userRepository.findById(o.getUserId()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .toList();
+        return userRepository.findUsersWithPaidOrdersIn2010();
     }
 }

@@ -15,29 +15,28 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
     public Order findOrder() {
-        Optional<Order> optionalOrder = orderRepository.findAll()
-                .stream()
-                .filter(order -> order.getQuantity() > 1)
-                .max(Comparator.comparing(Order::getCreatedAt));
+//        Optional<Order> optionalOrder = orderRepository.findAll()
+//                .stream()
+//                .filter(order -> order.getQuantity() > 1)
+//                .max(Comparator.comparing(Order::getCreatedAt));
 
-        return optionalOrder.orElse(null);
+        return orderRepository.findNewestOrderWithQuantityMoreThanOne();
     }
 
     @Override
     public List<Order> findOrders() {
-        return userRepository.findAll().stream()
-                .filter(user -> user.getUserStatus() == UserStatus.ACTIVE)
-                .flatMap(user -> user.getOrders().stream())
-                .sorted(Comparator.comparing(Order::getCreatedAt))
-                .collect(Collectors.toList());
+//        return userRepository.findAll().stream()
+//                .filter(user -> user.getUserStatus() == UserStatus.ACTIVE)
+//                .flatMap(user -> user.getOrders().stream())
+//                .sorted(Comparator.comparing(Order::getCreatedAt))
+//                .collect(Collectors.toList());
+        return orderRepository.findOrdersFromActiveUsersSortedByDate();
     }
 }
