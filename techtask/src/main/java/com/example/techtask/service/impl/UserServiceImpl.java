@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> user = Optional.empty();
         if (order.isPresent()) {
-           user = userRepository.findById((long) order.get().getUserId());
+           user = userRepository.findById(order.get().getUserId());
         }
 
         return user.orElse(null);
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .filter(o -> o.getCreatedAt().getYear() == 2010)
                 .filter(o -> o.getOrderStatus() == OrderStatus.PAID)
-                .map(o -> userRepository.findById((long) o.getUserId()))
+                .map(o -> userRepository.findById(o.getUserId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .toList();
